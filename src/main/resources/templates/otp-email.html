@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body style="margin: 0; padding: 0; background-color: #f4f4f4;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; margin-top: 20px; background-color: #ffffff; border: 1px solid #ddd;">
+    <tr>
+        <td align="center" style="padding: 20px 0 30px 0; background-color: #007bff; color: #ffffff;">
+
+            <h1 style="margin: 0; font-size: 24px;"
+                th:text="'Xác thực cho ' + ${otpPurpose}">
+                Xác thực tài khoản của bạn
+            </h1>
+
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 40px 30px 40px 30px;">
+            <p style="margin: 0 0 20px 0; font-size: 16px;">Xin chào,</p>
+
+            <p style="margin: 0 0 20px 0; font-size: 16px;"
+               th:text="'Mã OTP ' + ${otpPurpose} + ' của bạn là:'">
+                Mã OTP của bạn là:
+            </p>
+
+            <p style="margin: 25px 0; text-align: center; font-size: 36px; font-weight: bold; color: #333; letter-spacing: 3px; background-color: #f0f0f0; padding: 15px 10px; border-radius: 5px;">
+                <span th:text="${otpCode}">123456</span>
+            </p>
+
+            <p style="margin: 0 0 20px 0; font-size: 16px;">
+                Mã này sẽ hết hạn sau
+                <strong th:text="${expireMinutes}">15</strong>
+                phút.
+            </p>
+            <p style="margin: 0; font-size: 16px;">Nếu bạn không yêu cầu mã này, vui lòng bỏ qua email.</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -27,11 +27,6 @@ public class User {
     @Column(columnDefinition = "NVARCHAR(255)")
     String fullName;
 
-    @Column(columnDefinition = "NVARCHAR(500)")
-    String address;
-
-    String phone;
-
     String avatar;
 
     @Builder.Default

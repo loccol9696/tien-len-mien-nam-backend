@@ -17,7 +17,7 @@ import java.net.URI;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RedisConfig {
 
-    @Value("${REDIS_URL}")
+    @Value("${spring.data.redis.url}")
     String redisUrl;
 
     @Bean

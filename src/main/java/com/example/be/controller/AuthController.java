@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class AuthController {
     AuthService authService;
+    StringRedisTemplate template;
 
     @Operation(
             summary = "Đăng ký tài khoản mới bằng email và password"
@@ -122,4 +124,6 @@ public class AuthController {
                 .data(response)
                 .build());
     }
+
+
 }

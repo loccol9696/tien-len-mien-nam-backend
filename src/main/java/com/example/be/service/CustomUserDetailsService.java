@@ -1,6 +1,7 @@
 package com.example.be.service;
 
 import com.example.be.entity.User;
+import com.example.be.enums.Role;
 import com.example.be.exception.BusinessException;
 import com.example.be.repository.UserRepository;
 import lombok.AccessLevel;
@@ -22,10 +23,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new BusinessException("Email không tồn tại trong hệ thống", 404)
-        );
-
-        return org.springframework.security.core.userdetails.User
+        );return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
+                .password(user.getPassword() != null ? user.getPassword() : "")
                 .roles(user.getRole().name())
                 .disabled(!user.getActive())
                 .build();

@@ -39,19 +39,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
             try {
                 DecodedJWT decoded = jwtService.verifyToken(token);
-
                 String email = decoded.getSubject();
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
             } catch (Exception ex) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write(ex.getMessage());
                 return;
             }
         }
-        doFilter(request,response,filterChain);
+        filterChain.doFilter(request, response);
     }
 }

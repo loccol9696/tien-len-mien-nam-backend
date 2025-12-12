@@ -15,10 +15,12 @@ import com.google.api.client.json.gson.GsonFactory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,6 +31,7 @@ import java.util.Collections;
 import java.util.Map;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -113,6 +116,14 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new BusinessException("Email không tồn tại trong hệ thống", 404)
         );
+
+        if(!user.getActive()) {
+            throw new BusinessException("Tài khoản đã bị vô hiệu hóa", 400);
+        }
+
+        if(user.getAuthProvider() != AuthProvider.NONE) {
+            throw new BusinessException("Tài khoản này không hỗ trợ đăng nhập bằng email và mật khẩu", 400);
+        }
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new BusinessException("Mật khẩu không chính xác", 400);
@@ -242,5 +253,12 @@ public class AuthService {
             throw new RuntimeException("id_token không hợp lệ.");
         }
         return idToken.getPayload();
+    }
+
+    public User validateUser(Authentication authentication) {
+        String email = authentication.getName();
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new BusinessException("Email không tồn tại trong hệ thống", 404)
+        );
     }
 }

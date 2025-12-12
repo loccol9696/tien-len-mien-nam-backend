@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 public class AuthController {
     AuthService authService;
-    StringRedisTemplate template;
 
     @Operation(
             summary = "Đăng ký tài khoản mới bằng email và password"
@@ -124,6 +123,4 @@ public class AuthController {
                 .data(response)
                 .build());
     }
-
-
 }
